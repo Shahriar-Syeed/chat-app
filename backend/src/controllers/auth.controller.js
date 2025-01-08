@@ -1,13 +1,16 @@
-import User from "../modules/user.model";
+import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import { generateToken } from "./utils";
+import { generateToken } from "./utils.js";
 
  export const signup = async (req, res) => {
-  res.send("signup route");
+  // res.send("signup route");
   const { fullName, email, password } = req.body;
   try {
     // hash password
     // 123456 => ljhponahjnjlJn_nl554h4fh441
+    if(!fullName || !email || !password){
+      return res.status(400).json({message: "All fields are required"});
+    }
     if(password.length < 6) {
       return res.status(400).json({message: "Password must be at least 6 characters"});
     }
@@ -39,7 +42,7 @@ import { generateToken } from "./utils";
       })
       
     } else {
-      return res.status(400).json({ message: "Invalid user data"});
+      res.status(400).json({ message: "Invalid user data"});
     }
   } catch (error) {
     console.log("Error in signup", error.message);
