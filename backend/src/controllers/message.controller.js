@@ -1,8 +1,9 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
+import cloudinary from "../libs/cloudinary.js";
 
 export const getUsersForSidebar = async (req, res) => {
-  res.send("message route");
+  // res.send("message route");
   try {
     const loggedInUserId = req.user._id;
     const filteredUsers = await User.find({
@@ -31,5 +32,37 @@ export const getMessages = async (req, res) => {
   } catch (error) {
     console.log("Error in getMessage controller", error.message);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const sendMessages = async (req, res) => {
+  try {
+    const { text, image } = req.body;
+    const { id: receiverId } = req.params;
+    const myId = req.user._id;
+
+    let imageUrl="";
+
+    if (image) {
+      //upload base64 image to cloudinary
+      const uploadResponse = await cloudinary.uploader.upload(image);
+      imageUrl = uploadResponse.secure_url;
+    }
+
+    const newMessage = new Message({
+      senderId: myId,
+      receiverId,
+      image: imageUrl,
+      text,
+    });
+
+    await newMessage.save();
+
+
+    
+    res.status(201).json(newMessage);
+  } catch (error) {
+    console.log("Error in sendMessage controller", error.message);
+    res.status(500).json({ message: error.message });
   }
 };
