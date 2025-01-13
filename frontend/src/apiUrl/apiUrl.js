@@ -5,6 +5,7 @@ const apiUrl = {
   logout: "/logout",
   messages: "/message",
   messageSend: "/send",
+  check: "/auth/check",
 
 };
 
