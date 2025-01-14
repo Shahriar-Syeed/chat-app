@@ -6,6 +6,8 @@ import LoginPage from "../pages/LoginPage.jsx";
 import SettingsPage from "../pages/SettingsPage.jsx";
 import ProfilePage from "../pages/ProfilePage.jsx";
 
+
+
 const router = createBrowserRouter([
   {
     path:"/",
@@ -31,6 +33,10 @@ const router = createBrowserRouter([
       {
         path:"settings",
         element: <SettingsPage/>
+      },
+      {
+        path:"profile",
+        element: <ProfilePage/>
       },
     ]
 
