@@ -3,10 +3,10 @@ import { useAuthStore } from "../store/useAuthStore.js"
 
 export default function HomePage() {
 
-  const { authUser}= useAuthStore();
+  const {authUser}= useAuthStore();
   const navigate=useNavigate();
   if(!authUser){
-    navigate("/login")
+    navigate("/login");
   }
   return (
     <div>HomePage</div>

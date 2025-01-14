@@ -1,8 +1,8 @@
 const apiUrl = {
   base: "http://localhost:5001/api",
-  signUp: "/signup",
-  login: "/login",
-  logout: "/logout",
+  signUp: "/auth/signup",
+  login: "/auth/login",
+  logout: "/auth/logout",
   messages: "/message",
   messageSend: "/send",
   check: "/auth/check",
