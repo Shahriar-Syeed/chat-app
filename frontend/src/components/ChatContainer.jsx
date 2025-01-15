@@ -1,9 +1,21 @@
+import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
+import MessageSkeleton from "./skeletons/MessagesSkeleton";
+import { useAuthStore } from "../store/useAuthStore";
 
 export default function ChatContainer() {
-  const { selectedUser, messages } = useChatStore();
+  const {messages, getMessages, isMessagesLoading, selectedUser } = useChatStore();
+  const {authUser}= useAuthStore();
+  useEffect(()=>{
+    getMessages(selectedUser._id);
+  },[getMessages, selectedUser._id]);
+
+  function formatMessageTime(time){
+    return time;
+  }
+  if(isMessagesLoading) return <MessageSkeleton/>
   return (
     <div className="flex-1 flex flex-col overflow-auto">
       <ChatHeader />

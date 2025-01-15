@@ -77,8 +77,9 @@ export const useAuthStore = create((set) => ({
 
   updatingProfile: async (data)=>{
     set({isUpdatingProfile: true});
+    console.log(data, "imageDATA");
     try {
-      const response = await axiosInstance.post(apiUrl.updateProfile, data);
+      const response = await axiosInstance.put(apiUrl.updateProfile, data);
       set({authUser: response.data}); 
       toString.success("Update image successful");
 
