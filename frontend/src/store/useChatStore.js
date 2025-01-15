@@ -3,7 +3,7 @@ import { axiosInstance } from "../libs/axios";
 import apiUrl from "../apiUrl/apiUrl";
 import toast from "react-hot-toast";
 
-export const useChatStore = create((set) => ({
+export const useChatStore = create((set, get) => ({
 messages: [],
 users: [],
 selectedUser: null,
@@ -37,10 +37,25 @@ getMessages: async(userId) => {
     
   } catch (error) {
     toast.error(error.response.data.message);
-    console.log("Error in update image:", error);
+    console.log("Error in getting users", error);
   } finally{
     set({isMessagesLoading: false});
   }
+},
+sendMessage: async(messageData) => {
+  const {selectedUser, messages} = get();
+
+  try {
+    const response = await axiosInstance.post(apiUrl.messages + apiUrl.messageSend + `/${selectedUser._id}`, messageData);
+    set({messages: [...messages, response.data]}); 
+    toast.success("Send message successful");
+
+   
+    
+  } catch (error) {
+    toast.error(error.response.data.message);
+    console.log("Error in message send.", error);
+  } 
 },
 setSelectedUser: (selectedUser) => set({selectedUser}),
 })); 

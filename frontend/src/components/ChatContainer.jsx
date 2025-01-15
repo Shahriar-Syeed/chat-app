@@ -15,7 +15,13 @@ export default function ChatContainer() {
   function formatMessageTime(time){
     return time;
   }
-  if(isMessagesLoading) return <MessageSkeleton/>
+  if(isMessagesLoading) return (
+  <dev className="flex-1 flex flex-col overflow-auto">
+    <ChatHeader/>
+    <MessageSkeleton/>
+    <MessageInput/>
+  </dev>
+    );
   return (
     <div className="flex-1 flex flex-col overflow-auto">
       <ChatHeader />
@@ -25,7 +31,7 @@ export default function ChatContainer() {
           <div
             key={message._id}
             className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
-            ref={messageEndRef}
+            // ref={messageEndRef}
           >
             <div className=" chat-image avatar">
               <div className="size-10 rounded-full border">
