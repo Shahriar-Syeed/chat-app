@@ -4,7 +4,8 @@ const apiUrl = {
   login: "/auth/login",
   logout: "/auth/logout",
   updateProfile: "/auth/update-profile",
-  messages: "/message",
+  messages: "/messages",
+  messagesUsers: "/messages/users",
   messageSend: "/send",
   check: "/auth/check",
 
