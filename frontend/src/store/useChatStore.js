@@ -81,6 +81,5 @@ unsubscribeFromMessages: () =>{
   socket.off("newMessage");
 },
 
-// todo: optimize setSelector later
 setSelectedUser: (selectedUser) => set({selectedUser}),
 })); 
