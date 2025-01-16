@@ -16,7 +16,7 @@ getUsers: async() => {
   try {
     const response = await axiosInstance.get(apiUrl.messagesUsers);
     set({users: response.data}); 
-    toString.success("getting user successful");
+    toast.success("getting user successful");
 
     
   } catch (error) {
@@ -32,7 +32,7 @@ getMessages: async(userId) => {
   try {
     const response = await axiosInstance.get(apiUrl.messages + `/${userId}`);
     set({messages: response.data}); 
-    toString.success("getting user successful");
+    toast.success("getting user successful");
 
     
   } catch (error) {

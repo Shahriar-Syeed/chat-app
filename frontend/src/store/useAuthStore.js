@@ -34,7 +34,7 @@ export const useAuthStore = create((set, get) => ({
     try {
       const response = await axiosInstance.post(apiUrl.signUp, data);
       set({ authUser: response.data });
-      toString.success("Account created successfully");
+      toast.success("Account created successfully");
       get().connectSocket();
     } catch (error) {
       toast.error(error.response.data.message);
@@ -49,10 +49,10 @@ export const useAuthStore = create((set, get) => ({
     try {
       const response = await axiosInstance.post(apiUrl.logout);
       set({ authUser: null });
-      toString.success("Logout successfully");
+      toast.success("Logout successfully");
       get().disconnectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
       console.log("Error in logout:", error);
     }
   },
@@ -62,7 +62,7 @@ export const useAuthStore = create((set, get) => ({
     try {
       const response = await axiosInstance.post(apiUrl.login, data);
       set({ authUser: response.data });
-      toString.success("Logged in successfully");
+      toast.success("Logged in successfully");
 
       get().connectSocket();
     } catch (error) {
@@ -79,7 +79,7 @@ export const useAuthStore = create((set, get) => ({
     try {
       const response = await axiosInstance.put(apiUrl.updateProfile, data);
       set({ authUser: response.data });
-      toString.success("Update image successful");
+      toast.success("Update image successful");
     } catch (error) {
       toast.error(error.response.data.message);
       console.log("Error in update image:", error);
@@ -92,12 +92,22 @@ export const useAuthStore = create((set, get) => ({
     
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
-    const socket = io(BASE_URL);
+    const socket = io(BASE_URL,{
+      query:{
+        userId: authUser._id,
+      },
+    });
+
     socket.connect();
     set({socket:socket});
+
+    socket.on("getOnlineUsers", (userIds)=>{
+      set({onlineUsers: userIds});
+    });
   },
   disconnectSocket: () => {
-    // const socket = io(BASE_URL);
+
     if(get().socket?.connected) get().socket.disconnect();
+
   },
 }));
