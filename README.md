@@ -85,7 +85,16 @@ The application will run at `http://localhost:5001`.
 
 ## 🖥 Demo
 
-For a live demo, check out the [LIVE_WEBl](https://chat-app-1-fncp.onrender.com/).
+For a live demo, check out the [LIVE_WEB_Link](https://chat-app-1-fncp.onrender.com/).
+
+### Login Info
+
+Email:  jene@email.com
+Password:  123456
+
+Email:  john@email.com
+Password:  123456
+
 
 ---
 
