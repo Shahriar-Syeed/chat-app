@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useChatStore } from "../store/useChatStore";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
@@ -7,19 +7,38 @@ import { useAuthStore } from "../store/useAuthStore";
 import { formatMessageTime } from "../../../backend/src/libs/utils";
 
 export default function ChatContainer() {
-  const {messages, getMessages, isMessagesLoading, selectedUser } = useChatStore();
-  const {authUser}= useAuthStore();
-  useEffect(()=>{
+  const {
+    messages,
+    getMessages,
+    isMessagesLoading,
+    selectedUser,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useChatStore();
+  const { authUser } = useAuthStore();
+  const messageEndRef = useRef(null);
+  useEffect(() => {
     getMessages(selectedUser._id);
-  },[getMessages, selectedUser._id]);
+    subscribeToMessages();
+    return () => unsubscribeFromMessages();
+  }, [
+    getMessages,
+    selectedUser._id,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
+  useEffect(() => {
+    if (messageEndRef.current && messages)
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-  
-  if(isMessagesLoading) return (
-  <dev className="flex-1 flex flex-col overflow-auto">
-    <ChatHeader/>
-    <MessageSkeleton/>
-    <MessageInput/>
-  </dev>
+  if (isMessagesLoading)
+    return (
+      <dev className="flex-1 flex flex-col overflow-auto">
+        <ChatHeader />
+        <MessageSkeleton />
+        <MessageInput />
+      </dev>
     );
   return (
     <div className="flex-1 flex flex-col overflow-auto">
@@ -29,8 +48,10 @@ export default function ChatContainer() {
         {messages.map((message) => (
           <div
             key={message._id}
-            className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
-            // ref={messageEndRef}
+            className={`chat ${
+              message.senderId === authUser._id ? "chat-end" : "chat-start"
+            }`}
+            ref={messageEndRef}
           >
             <div className=" chat-image avatar">
               <div className="size-10 rounded-full border">
@@ -66,4 +87,4 @@ export default function ChatContainer() {
       <MessageInput />
     </div>
   );
-};
+}
