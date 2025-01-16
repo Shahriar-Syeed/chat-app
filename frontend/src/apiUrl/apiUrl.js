@@ -1,5 +1,5 @@
 const apiUrl = {
-  base: "http://localhost:5001/api",
+  base: import.meta.env.MODE === "development" ? "http://localhost:5001/api": "/api",
   signUp: "/auth/signup",
   login: "/auth/login",
   logout: "/auth/logout",
